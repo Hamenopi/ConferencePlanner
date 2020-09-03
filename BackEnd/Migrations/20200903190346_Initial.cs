@@ -11,7 +11,7 @@ namespace BackEnd.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     Bio = table.Column<string>(maxLength: 4000, nullable: true),
                     WebSite = table.Column<string>(maxLength: 1000, nullable: true)
