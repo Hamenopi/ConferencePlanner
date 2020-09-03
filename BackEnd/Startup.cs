@@ -34,6 +34,16 @@ namespace BackEnd
             });
 
             services.AddControllers();
+
+            services.AddSwaggerGen(options =>
+                options.SwaggerDoc("v1",
+                new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Conference Planner API",
+                    Version = "v1"
+                }
+                )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
