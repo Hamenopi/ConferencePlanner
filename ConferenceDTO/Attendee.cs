@@ -19,7 +19,5 @@ namespace ConferenceDTO
 
         [StringLength(200)]
         public virtual string EmailAddress { get; set; }
-
-
     }
 }
