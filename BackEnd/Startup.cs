@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using BackEnd.Models;
+using BackEnd.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +45,7 @@ namespace BackEnd
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseSwagger();
 
             app.UseSwaggerUI(options =>
@@ -55,7 +55,7 @@ namespace BackEnd
             app.UseRouting();
 
             app.UseAuthorization();
-                
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", context =>
