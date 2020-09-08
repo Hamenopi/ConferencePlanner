@@ -21,7 +21,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<AttendeeResponse>> Get(string username)
+        public async Task<ActionResult<ConferenceDTO.AttendeeResponse>> Get(string username)
         {
             var attendee = await _context.Attendees.Include(a => a.SessionsAttendees)
                                                 .ThenInclude(sa => sa.Session)
@@ -40,7 +40,7 @@ namespace BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<AttendeeResponse>> Post(ConferenceDTO.Attendee input)
+        public async Task<ActionResult<ConferenceDTO.AttendeeResponse>> Post(ConferenceDTO.Attendee input)
         {
             // Check if the attendee already exists
             var existingAttendee = await _context.Attendees

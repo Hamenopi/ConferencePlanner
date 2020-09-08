@@ -31,14 +31,8 @@ namespace BackEnd
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                }
-                else
-                {
-                    options.UseSqlite("Data Source=conferences.db");
-                }
+                options.UseSqlite("Data Source=conferences.db");
+
             });
 
             services.AddControllers();
