@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceDTO
 {
@@ -14,10 +16,11 @@ namespace ConferenceDTO
         [StringLength(200)]
         public virtual string LastName { get; set; }
 
+        [Required]
         [StringLength(200)]
         public string UserName { get; set; }
 
-        [StringLength(200)]
+        [StringLength(256)]
         public virtual string EmailAddress { get; set; }
     }
 }

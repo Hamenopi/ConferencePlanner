@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceDTO
@@ -18,6 +20,7 @@ namespace ConferenceDTO
 
         public virtual DateTimeOffset? EndTime { get; set; }
 
+        // Bonus points to those who can figure out why this is written this way
         public TimeSpan Duration => EndTime?.Subtract(StartTime ?? EndTime ?? DateTimeOffset.MinValue) ?? TimeSpan.Zero;
 
         public int? TrackId { get; set; }
