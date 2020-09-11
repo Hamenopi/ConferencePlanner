@@ -42,9 +42,11 @@ namespace FrontEnd.Pages.Admin
                 return Page();
             }
 
+            Message = "Session updated successfully!";
+
             await _apiClient.PutSessionAsync(Session);
 
-            return Page();
+            return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
@@ -56,8 +58,17 @@ namespace FrontEnd.Pages.Admin
                 await _apiClient.DeleteSessionAsync(id);
             }
 
-            return Page();
+            Message = "Session deleted successfully!";
+
+            return RedirectToPage("/Index");
         }
+
+        [TempData]
+        public string Message { get; set; }
+
+        public bool ShowMessage => !string.IsNullOrEmpty(Message);
+
+
     }
 
 }

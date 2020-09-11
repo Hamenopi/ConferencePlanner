@@ -54,5 +54,10 @@ namespace FrontEnd.Pages
                                .GroupBy(s => s.StartTime)
                                .OrderBy(g => g.Key);
         }
+
+        [TempData]
+        public string Message { get; set; }
+
+        public bool ShowMessage => !string.IsNullOrEmpty(Message);
     }
 }

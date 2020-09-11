@@ -1,6 +1,7 @@
 ﻿using FrontEnd.Data;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
