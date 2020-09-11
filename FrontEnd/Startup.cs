@@ -69,6 +69,8 @@ namespace FrontEnd
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<RequireLoginMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
