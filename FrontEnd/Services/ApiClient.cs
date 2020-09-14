@@ -151,21 +151,5 @@ namespace FrontEnd.Services
 
             return await response.Content.ReadAsAsync<List<SessionResponse>>();
         }
-
-        public async Task<bool> CheckHealthAsync()
-        {
-            try
-            {
-                var response = await _httpClient.GetStringAsync("/health");
-
-                return string.Equals(response, "Healthy", StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-
     }
 }
