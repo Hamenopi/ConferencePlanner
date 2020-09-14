@@ -2,27 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.Runtime.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace FrontEnd.TagHelpers
 {
-    // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
     [HtmlTargetElement("*", Attributes = "authz")]
     [HtmlTargetElement("*", Attributes = "authz-policy")]
     public class AuthzTagHelper : TagHelper
     {
+        private readonly IAuthorizationService _authzService;
 
         public AuthzTagHelper(IAuthorizationService authzService)
         {
             _authzService = authzService;
         }
 
-        private readonly IAuthorizationService _authzService;
+        [HtmlAttributeName("authz")]
+        public bool RequiresAuthentication { get; set; }
+
+        [HtmlAttributeName("authz-policy")]
+        public string RequiredPolicy { get; set; }
+
+        [ViewContext]
+        public ViewContext ViewContext { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -36,7 +41,7 @@ namespace FrontEnd.TagHelpers
             }
             else if (!string.IsNullOrEmpty(RequiredPolicy))
             {
-                // authz-policy="foo" & user is authorized for policy "foo"
+                // auth-policy="foo" & user is authorized for policy "foo"
                 var authorized = false;
                 var cachedResult = ViewContext.ViewData["AuthPolicy." + RequiredPolicy];
                 if (cachedResult != null)
@@ -49,12 +54,12 @@ namespace FrontEnd.TagHelpers
                     authorized = authResult.Succeeded;
                     ViewContext.ViewData["AuthPolicy." + RequiredPolicy] = authorized;
                 }
-
+                
                 showOutput = authorized;
             }
             else if (requiresAuth && ViewContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                // authz="true" & user is authenticated
+                // auth="true" & user is authenticated
                 showOutput = true;
             }
 
@@ -63,16 +68,5 @@ namespace FrontEnd.TagHelpers
                 output.SuppressOutput();
             }
         }
-
-        [HtmlAttributeName("authz")]
-        public bool RequiresAuthentication { get; set; }
-
-        [HtmlAttributeName("authz-policy")]
-        public string RequiredPolicy { get; set; }
-
-        [ViewContext]
-        public ViewContext ViewContext { get; set; }
-
-
     }
 }

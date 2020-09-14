@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FrontEnd.Middleware;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,10 +25,14 @@ namespace FrontEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddHttpClient<IApiClient, ApiClient>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["serviceUrl"]);
+            });
+
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Admin", "Admin");
             });
 
             services.AddSingleton<IAdminService, AdminService>();
@@ -37,13 +42,8 @@ namespace FrontEnd
                 options.AddPolicy("Admin", policy =>
                 {
                     policy.RequireAuthenticatedUser()
-                    .RequireIsAdminClaim();
+                          .RequireIsAdminClaim();
                 });
-            });
-
-            services.AddRazorPages(options =>
-            {
-                options.Conventions.AuthorizeFolder("/Admin", "Admin");
             });
         }
 

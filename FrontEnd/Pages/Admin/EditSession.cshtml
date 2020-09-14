@@ -1,8 +1,8 @@
 ﻿@page "{id}"
-@model FrontEnd.Pages.Admin.EditSessionModel
-@{
-}
+@model EditSessionModel
+
 <h3>Edit Session</h3>
+
 @if (Model.ShowMessage)
 {
     <div class="alert alert-success alert-dismissible" role="alert">
@@ -10,6 +10,7 @@
         @Model.Message
     </div>
 }
+
 <form method="post" class="form-horizontal">
     <div asp-validation-summary="All" class="text-danger"></div>
     <input asp-for="Session.Id" type="hidden" />

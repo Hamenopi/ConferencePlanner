@@ -7,7 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace FrontEnd.Pages
+namespace FrontEnd
 {
     [SkipWelcome]
     public class WelcomeModel : PageModel

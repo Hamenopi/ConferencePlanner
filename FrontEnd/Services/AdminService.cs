@@ -1,42 +1,44 @@
-﻿using FrontEnd.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using FrontEnd.Data;
+using Microsoft.Extensions.DependencyInjection;
 
-public class AdminService : IAdminService
+namespace FrontEnd.Services
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    private bool _adminExists;
-
-    public AdminService(IServiceProvider serviceProvider)
+    public class AdminService : IAdminService
     {
-        _serviceProvider = serviceProvider;
-    }
+        private readonly IServiceProvider _serviceProvider;
 
+        private bool _adminExists;
 
-    public async Task<bool> AllowAdminUserCreationAsync()
-    {
-        if (_adminExists)
+        public AdminService(IServiceProvider serviceProvider)
         {
-            return false;
+            _serviceProvider = serviceProvider;
         }
-        else
+
+        public async Task<bool> AllowAdminUserCreationAsync()
         {
-            using (var scope = _serviceProvider.CreateScope())
+            if (_adminExists)
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-
-                if (await dbContext.Users.AnyAsync(user => user.IsAdmin))
+                return false;
+            }
+            else
+            {
+                using (var scope = _serviceProvider.CreateScope())
                 {
-                    // There are already admin users so disable admin creation
-                    _adminExists = true;
-                    return false;
-                }
+                    var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
 
-                // There are no admin users so enable admin creation
-                return true;
+                    if (await dbContext.Users.AnyAsync(user => user.IsAdmin))
+                    {
+                        // There are already admin users so disable admin creation
+                        _adminExists = true;
+                        return false;
+                    }
+
+                    // There are no admin users so enable admin creation
+                    return true;
+                }
             }
         }
     }

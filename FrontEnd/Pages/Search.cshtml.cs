@@ -22,7 +22,6 @@ namespace FrontEnd.Pages
 
         public List<SearchResult> SearchResults { get; set; }
 
-
         public async Task OnGetAsync(string term)
         {
             Term = term;

@@ -18,6 +18,11 @@ namespace FrontEnd.Pages.Admin
             _apiClient = apiClient;
         }
 
+        [TempData]
+        public string Message { get; set; }
+
+        public bool ShowMessage => !string.IsNullOrEmpty(Message);
+
         [BindProperty]
         public Session Session { get; set; }
 
@@ -46,7 +51,7 @@ namespace FrontEnd.Pages.Admin
 
             await _apiClient.PutSessionAsync(Session);
 
-            return RedirectToPage();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
@@ -60,15 +65,7 @@ namespace FrontEnd.Pages.Admin
 
             Message = "Session deleted successfully!";
 
-            return RedirectToPage("/Index");
+            return Page();
         }
-
-        [TempData]
-        public string Message { get; set; }
-
-        public bool ShowMessage => !string.IsNullOrEmpty(Message);
-
-
     }
-
 }

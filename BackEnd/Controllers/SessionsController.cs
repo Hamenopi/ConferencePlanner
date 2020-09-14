@@ -22,7 +22,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ConferenceDTO.SessionResponse>>> Get()
+        public async Task<ActionResult<List<SessionResponse>>> Get()
         {
             var sessions = await _context.Sessions.AsNoTracking()
                                              .Include(s => s.Track)
@@ -34,7 +34,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ConferenceDTO.SessionResponse>> Get(int id)
+        public async Task<ActionResult<SessionResponse>> Get(int id)
         {
             var session = await _context.Sessions.AsNoTracking()
                                             .Include(s => s.Track)
@@ -51,7 +51,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ConferenceDTO.SessionResponse>> Post(ConferenceDTO.Session input)
+        public async Task<ActionResult<SessionResponse>> Post(ConferenceDTO.Session input)
         {
             var session = new Data.Session
             {
@@ -93,7 +93,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ConferenceDTO.SessionResponse>> Delete(int id)
+        public async Task<ActionResult<SessionResponse>> Delete(int id)
         {
             var session = await _context.Sessions.FindAsync(id);
 

@@ -21,7 +21,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<ConferenceDTO.AttendeeResponse>> Get(string username)
+        public async Task<ActionResult<AttendeeResponse>> Get(string username)
         {
             var attendee = await _context.Attendees.Include(a => a.SessionsAttendees)
                                                 .ThenInclude(sa => sa.Session)
@@ -37,10 +37,23 @@ namespace BackEnd.Controllers
             return result;
         }
 
+        [HttpGet("{username}/sessions")]
+        public async Task<ActionResult<List<SessionResponse>>> GetSessions(string username)
+        {
+            var sessions = await _context.Sessions.AsNoTracking()
+                                                .Include(s => s.Track)
+                                                .Include(s => s.SessionSpeakers)
+                                                    .ThenInclude(ss => ss.Speaker)
+                                                .Where(s => s.SessionAttendees.Any(sa => sa.Attendee.UserName == username))
+                                                .Select(m => m.MapSessionResponse())
+                                                .ToListAsync();
+            return sessions;
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<ConferenceDTO.AttendeeResponse>> Post(ConferenceDTO.Attendee input)
+        public async Task<ActionResult<AttendeeResponse>> Post(ConferenceDTO.Attendee input)
         {
             // Check if the attendee already exists
             var existingAttendee = await _context.Attendees
@@ -132,19 +145,6 @@ namespace BackEnd.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        [HttpGet("{username}/sessions")]
-        public async Task<ActionResult<List<SessionResponse>>> GetSessions(string username)
-        {
-            var sessions = await _context.Sessions.AsNoTracking()
-                                                .Include(s => s.Track)
-                                                .Include(s => s.SessionSpeakers)
-                                                    .ThenInclude(ss => ss.Speaker)
-                                                .Where(s => s.SessionAttendees.Any(sa => sa.Attendee.UserName == username))
-                                                .Select(m => m.MapSessionResponse())
-                                                .ToListAsync();
-            return sessions;
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-public interface IAdminService
+namespace FrontEnd.Services
 {
-    Task<bool> AllowAdminUserCreationAsync();
+    public interface IAdminService
+    {
+        Task<bool> AllowAdminUserCreationAsync();
+    }
 }

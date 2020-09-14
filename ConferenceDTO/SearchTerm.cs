@@ -8,6 +8,4 @@ namespace ConferenceDTO
     {
         public string Query { get; set; }
     }
-
-
 }

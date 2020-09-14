@@ -14,12 +14,13 @@ namespace FrontEnd.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<IdentityDbContext>(options =>
-                    options.UseSqlite(
-                        context.Configuration.GetConnectionString("IdentityDbContextConnection")));
+                    options.UseSqlite("Data Source=conferences.db"));
 
-                services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<User>()
+                    .AddDefaultUI()
                     .AddEntityFrameworkStores<IdentityDbContext>()
                     .AddClaimsPrincipalFactory<ClaimsPrincipalFactory>();
             });

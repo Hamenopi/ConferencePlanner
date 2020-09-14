@@ -1,4 +1,8 @@
-﻿namespace ConferenceDTO
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ConferenceDTO
 {
     public class SearchResult
     {
@@ -9,5 +13,9 @@
         public SpeakerResponse Speaker { get; set; }
     }
 
-
+    public enum SearchResultType
+    {
+        Session,
+        Speaker
+    }
 }

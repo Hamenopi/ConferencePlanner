@@ -13,17 +13,16 @@ namespace FrontEnd.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<int> UserSessions { get; set; } = new List<int>();
-
+        private readonly ILogger<IndexModel> _logger;
         protected readonly IApiClient _apiClient;
 
-        public bool ShowMessage => !string.IsNullOrEmpty(Message);
-
-        public IndexModel(IApiClient apiClient)
+        public IndexModel(ILogger<IndexModel> logger, IApiClient apiClient)
         {
+            _logger = logger;
             _apiClient = apiClient;
-
         }
+
+        public bool IsAdmin { get; set; }
 
         public IEnumerable<IGrouping<DateTimeOffset?, SessionResponse>> Sessions { get; set; }
 
@@ -31,18 +30,14 @@ namespace FrontEnd.Pages
 
         public int CurrentDayOffset { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public List<int> UserSessions { get; set; } = new List<int>();
 
         [TempData]
         public string Message { get; set; }
 
+        public bool ShowMessage => !string.IsNullOrEmpty(Message);
 
-        protected virtual Task<List<SessionResponse>> GetSessionsAsync()
-        {
-            return _apiClient.GetSessionsAsync();
-        }
-
-        public async Task OnGetAsync(int day = 0)
+        public async Task OnGet(int day = 0)
         {
             IsAdmin = User.IsAdmin();
 
@@ -72,6 +67,11 @@ namespace FrontEnd.Pages
                                .OrderBy(g => g.Key);
         }
 
+        protected virtual Task<List<SessionResponse>> GetSessionsAsync()
+        {
+            return _apiClient.GetSessionsAsync();
+        }
+
         public async Task<IActionResult> OnPostAsync(int sessionId)
         {
             await _apiClient.AddSessionToAttendeeAsync(User.Identity.Name, sessionId);
@@ -85,6 +85,5 @@ namespace FrontEnd.Pages
 
             return RedirectToPage();
         }
-
     }
 }

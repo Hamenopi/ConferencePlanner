@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
-namespace FrontEnd
+namespace FrontEnd.Middleware
 {
     public class RequireLoginMiddleware
     {
@@ -41,4 +44,3 @@ namespace FrontEnd
         }
     }
 }
-
