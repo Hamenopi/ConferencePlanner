@@ -17,7 +17,7 @@ namespace FrontEnd.Areas.Identity
             builder.ConfigureServices((context, services) =>
             {
                 services.AddDbContext<IdentityDbContext>(options =>
-                    options.UseSqlite("Data Source=conferences.db"));
+                    options.UseSqlite("Data Source=security.db"));
 
                 services.AddDefaultIdentity<User>()
                     .AddDefaultUI()
