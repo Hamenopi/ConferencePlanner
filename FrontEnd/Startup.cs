@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FrontEnd.Data;
+using FrontEnd.HealthChecks;
 using FrontEnd.Middleware;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Builder;
@@ -25,10 +27,15 @@ namespace FrontEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddHealthChecks()
+                .AddCheck<BackendHealthCheck>("backend")
+                .AddDbContextCheck<IdentityDbContext>();
+
             services.AddHttpClient<IApiClient, ApiClient>(client =>
-            {
-                client.BaseAddress = new Uri(Configuration["serviceUrl"]);
-            });
+{
+    client.BaseAddress = new Uri(Configuration["serviceUrl"]);
+});
 
             services.AddRazorPages(options =>
             {
@@ -73,6 +80,7 @@ namespace FrontEnd
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapRazorPages();
             });
         }
