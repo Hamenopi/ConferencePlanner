@@ -13,14 +13,16 @@ namespace FrontEnd.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        public List<int> UserSessions { get; set; } = new List<int>();
 
         protected readonly IApiClient _apiClient;
 
-        public IndexModel(IApiClient apiClient, ILogger<IndexModel> logger)
+        public bool ShowMessage => !string.IsNullOrEmpty(Message);
+
+        public IndexModel(IApiClient apiClient)
         {
             _apiClient = apiClient;
-            _logger = logger;
+
         }
 
         public IEnumerable<IGrouping<DateTimeOffset?, SessionResponse>> Sessions { get; set; }
@@ -31,13 +33,28 @@ namespace FrontEnd.Pages
 
         public bool IsAdmin { get; set; }
 
+        [TempData]
+        public string Message { get; set; }
+
+
+        protected virtual Task<List<SessionResponse>> GetSessionsAsync()
+        {
+            return _apiClient.GetSessionsAsync();
+        }
+
         public async Task OnGetAsync(int day = 0)
         {
             IsAdmin = User.IsAdmin();
 
             CurrentDayOffset = day;
 
-            var sessions = await _apiClient.GetSessionsAsync();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userSessions = await _apiClient.GetSessionsByAttendeeAsync(User.Identity.Name);
+                UserSessions = userSessions.Select(u => u.Id).ToList();
+            }
+
+            var sessions = await GetSessionsAsync();
 
             var startDate = sessions.Min(s => s.StartTime?.Date);
 
@@ -55,9 +72,19 @@ namespace FrontEnd.Pages
                                .OrderBy(g => g.Key);
         }
 
-        [TempData]
-        public string Message { get; set; }
+        public async Task<IActionResult> OnPostAsync(int sessionId)
+        {
+            await _apiClient.AddSessionToAttendeeAsync(User.Identity.Name, sessionId);
 
-        public bool ShowMessage => !string.IsNullOrEmpty(Message);
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostRemoveAsync(int sessionId)
+        {
+            await _apiClient.RemoveSessionFromAttendeeAsync(User.Identity.Name, sessionId);
+
+            return RedirectToPage();
+        }
+
     }
 }

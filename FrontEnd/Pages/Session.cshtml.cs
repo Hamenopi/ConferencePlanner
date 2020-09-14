@@ -24,6 +24,14 @@ namespace FrontEnd.Pages
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var sessions = await _apiClient.GetSessionsByAttendeeAsync(User.Identity.Name);
+
+                IsInPersonalAgenda = sessions.Any(s => s.Id == id);
+            }
+
             Session = await _apiClient.GetSessionAsync(id);
 
             if (Session == null)
@@ -40,6 +48,20 @@ namespace FrontEnd.Pages
             return Page();
         }
 
+        public bool IsInPersonalAgenda { get; set; }
 
+        public async Task<IActionResult> OnPostAsync(int sessionId)
+        {
+            await _apiClient.AddSessionToAttendeeAsync(User.Identity.Name, sessionId);
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostRemoveAsync(int sessionId)
+        {
+            await _apiClient.RemoveSessionFromAttendeeAsync(User.Identity.Name, sessionId);
+
+            return RedirectToPage();
+        }
     }
 }
