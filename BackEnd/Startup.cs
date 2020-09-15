@@ -79,6 +79,7 @@ namespace BackEnd
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
 
