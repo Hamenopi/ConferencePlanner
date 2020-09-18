@@ -45,5 +45,25 @@ namespace BackEnd.Controllers
 
             return speaker.MapSpeakerResponse();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ConferenceDTO.SpeakerResponse>> Post(ConferenceDTO.Speaker input)
+        {
+            var speaker = new Speaker
+            {
+                Name = input.Name,
+                Bio = input.Bio,
+                WebSite = input.WebSite                
+            };
+
+            _context.Speakers.Add(speaker);
+            await _context.SaveChangesAsync();
+
+            var result = speaker.MapSpeakerResponse();
+
+            return CreatedAtAction(nameof(GetSpeakers), new { id = result.Id }, result);
+        }
+
+
     }
 }
