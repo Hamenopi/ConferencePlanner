@@ -47,7 +47,7 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ConferenceDTO.SpeakerResponse>> Post(ConferenceDTO.Speaker input)
+        public async Task<ActionResult<ConferenceDTO.SpeakerResponse>> AddSpeaker(ConferenceDTO.Speaker input)
         {
             var speaker = new Speaker
             {
