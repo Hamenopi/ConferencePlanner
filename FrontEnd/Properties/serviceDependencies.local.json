@@ -1,3 +1,9 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "IdentityDbContextConnection",
+      "secretStore": null
+    }
+  }
 }
