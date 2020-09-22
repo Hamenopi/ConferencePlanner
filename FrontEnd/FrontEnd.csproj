@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.0" />
+    <PackageReference Include="Azure.Identity" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.1.8" />
     <ProjectReference Include="..\ConferenceDTO\ConferenceDTO.csproj" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
