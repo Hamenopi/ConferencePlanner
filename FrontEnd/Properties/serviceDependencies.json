@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": "FE"
-    },
     "mssql1": {
       "type": "mssql",
       "connectionId": "IdentityDbContextConnection"
